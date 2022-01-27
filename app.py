@@ -3,7 +3,7 @@ import cv2
 from flask import Flask, render_template, Response
 
 app = Flask(__name__)
-camera = cv2.VideoCapture(0)
+camera = cv2.VideoCapture("http://10.46.239.173:8080/video")
 
 @app.route("/")
 def index():
@@ -22,7 +22,8 @@ def generate_frames():
             ret, buffer = cv2.imencode(".jpg", frame)
             frame = buffer.tobytes()
 
-        yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
 if __name__ == "__main__":
